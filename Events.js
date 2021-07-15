@@ -1,0 +1,13 @@
+const SHOW_ERROR = "SHOW_ERROR";
+const SHOW_NOT_FOUND = "SHOW_NOT_FOUND";
+const SHOW_LOADING = "SHOW_LOADING";
+const SHOW_PAGE = "SHOW_PAGE";
+const REQUEST_NAVIGATE = "REQUEST_NAVIGATE";
+const NAVIGATE = "navigate";
+
+export {SHOW_ERROR};
+export {SHOW_NOT_FOUND};
+export {SHOW_LOADING};
+export {SHOW_PAGE};
+export {REQUEST_NAVIGATE};
+export {NAVIGATE};

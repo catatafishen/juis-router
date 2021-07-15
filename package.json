@@ -1,0 +1,22 @@
+{
+  "name": "juis-router",
+  "version": "1.0.4",
+  "description": "",
+  "exports": {
+    "./Events.js": "./Events.js",
+    "./NavigationUtils.js": "./NavigationUtils.js",
+    "./Router.js": "./Router.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "henrik@westergard.org",
+  "license": "ISC",
+  "dependencies": {
+    "juis-commons": "^1.0.8"
+  },
+  "devDependencies": {
+    "juis-components": "^1.0.0"
+  }
+}
