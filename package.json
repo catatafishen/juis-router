@@ -1,6 +1,6 @@
 {
   "name": "juis-router",
-  "version": "1.0.4",
+  "version": "1.0.10",
   "description": "",
   "exports": {
     "./Events.js": "./Events.js",
@@ -14,9 +14,6 @@
   "author": "henrik@westergard.org",
   "license": "ISC",
   "dependencies": {
-    "juis-commons": "^1.0.8"
-  },
-  "devDependencies": {
-    "juis-components": "^1.0.0"
+    "juis-commons": "^1.0.10"
   }
 }
