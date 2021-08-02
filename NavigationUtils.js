@@ -55,6 +55,9 @@ let consumeUrl = (url, pattern) => {
         }
         return url.substring(0, matches[0].length);
     } else {
+        if (!pattern.startsWith("/")) {
+            pattern = "/" + pattern;
+        }
         return url.substring(0, pattern.length);
     }
 };
@@ -75,4 +78,20 @@ let concatenateUrls = (...urls) => {
         .join("/")
 }
 
-export {isMatchingUrl, getUrlParameters, consumeUrl, concatenateUrls};
+const isSameUrl = (url1 = "", url2 = "") => {
+    if (!url1.startsWith("/")) {
+        url1 = "/" + url1;
+    }
+    if (!url2.startsWith("/")) {
+        url2 = "/" + url2;
+    }
+    if (!url1.endsWith("/")) {
+        url1 = url1 + "/";
+    }
+    if (!url2.endsWith("/")) {
+        url2 = url2 + "/";
+    }
+    return url1 === url2;
+}
+
+export {isMatchingUrl, getUrlParameters, consumeUrl, concatenateUrls, isSameUrl};

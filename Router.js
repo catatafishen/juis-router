@@ -1,4 +1,4 @@
-import {concatenateUrls, consumeUrl, getUrlParameters, isMatchingUrl} from "./NavigationUtils.js";
+import {concatenateUrls, consumeUrl, getUrlParameters, isMatchingUrl, isSameUrl} from "./NavigationUtils.js";
 import Listenable from "juis-commons/Listenable.js";
 import {NOT_FOUND} from "juis-commons/Errors.js";
 import {NAVIGATE, REQUEST_NAVIGATE, SHOW_ERROR, SHOW_LOADING, SHOW_NOT_FOUND, SHOW_PAGE} from "./Events.js";
@@ -82,7 +82,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
     let routerBaseUrl;
     let currentUrl;
     let navigate = function (route, url, consumedUrl, matchingUrlPart, dynamicParameters) {
-        if (currentUrl === consumedUrl) {
+        if (isSameUrl(currentUrl, consumedUrl)) {
             // No need to act if the url didn't change. Just propagate in case something on a lower level has changed.
             triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, currentComponent);
             return;
