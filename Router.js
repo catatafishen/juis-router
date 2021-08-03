@@ -44,7 +44,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 }
                 resolve(component);
             } else {
-                loadingPage.setText("Reticulating splines");
+                loadingPage.setText("Waiting");
                 showComponent(loadingPage);
                 let path = route.path;
                 if (path.startsWith("/src/")) {
