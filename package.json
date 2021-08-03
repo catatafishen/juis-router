@@ -1,6 +1,6 @@
 {
   "name": "juis-router",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "",
   "exports": {
     "./Events.js": "./Events.js",
