@@ -78,7 +78,10 @@ let concatenateUrls = (...urls) => {
         .join("/")
 }
 
-const isSameUrl = (url1 = "", url2 = "") => {
+const isSameUrl = (url1, url2) => {
+    if (typeof url1 !== "string" || typeof url2 !== "string") {
+        return false;
+    }
     if (!url1.startsWith("/")) {
         url1 = "/" + url1;
     }
