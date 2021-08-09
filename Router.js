@@ -15,7 +15,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
     let routes = [];
     let currentComponent = loadingPage;
     let currentRoute;
-
+    let fallbackRoute;
     let showComponent = function (newComponent) {
         if (currentComponent !== newComponent) {
             if (currentComponent.getNode().hasParent()) {
@@ -28,6 +28,9 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
 
     let findMatchingRoute = function (url) {
         return routes.find(route => isMatchingUrl(url, route.url));
+    };
+    this.setFallbackRoute = function (url) {
+        fallbackRoute = findMatchingRoute(url);
     };
 
     let getComponentForRoute = (route, consumedUrl) => {
@@ -149,22 +152,33 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
     }
 
     let parameters = {}
-    this.on(NAVIGATE, (event) => {
-        if (!event.consumedUrl || event.consumedUrl === "/") {
-            event.consumedUrl = "";
+    this.on(NAVIGATE, (navigation, event) => {
+        if (!navigation.consumedUrl || navigation.consumedUrl === "/") {
+            navigation.consumedUrl = "";
         }
-        let matchingUrlPart = event.url.substring(event.consumedUrl.length);
+        let matchingUrlPart = navigation.url.substring(navigation.consumedUrl.length);
         let route = findMatchingRoute(matchingUrlPart);
         if (!route) {
-            currentRoute = undefined;
-            console.warn("could not find route", event.url, "among routes", routes);
-            showComponent(notFoundPage);
+            if (fallbackRoute) {
+                // Defer the request to the fallback route so that all handling of the current navigation event
+                // can finish first.
+                Promise.resolve().then(() => {
+                    this.triggerOnce(REQUEST_NAVIGATE, {url: fallbackRoute.url, replaceHistory: true});
+                });
+                // In case other navigation listeners are added to this router, those wont fire when marking the event
+                // as resolved.
+                event.resolve();
+            } else {
+                currentRoute = undefined;
+                console.warn("could not find route", navigation.url, "among routes", routes);
+                showComponent(notFoundPage);
+            }
         } else {
-            let consumedUrl = concatenateUrls(event.consumedUrl, consumeUrl(matchingUrlPart, route.url));
+            let consumedUrl = concatenateUrls(navigation.consumedUrl, consumeUrl(matchingUrlPart, route.url));
             // Trigger any old parameters again, but overwrite if there are new values.
-            parameters = {...parameters, ...event.parameters};
-            routerBaseUrl = event.consumedUrl;
-            navigate(route, event.url, consumedUrl, matchingUrlPart, parameters);
+            parameters = {...parameters, ...navigation.parameters};
+            routerBaseUrl = navigation.consumedUrl;
+            navigate(route, navigation.url, consumedUrl, matchingUrlPart, parameters);
         }
     });
 
