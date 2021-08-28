@@ -36,8 +36,8 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
     let getComponentForRoute = (route, consumedUrl) => {
         return new Promise((resolve) => {
             if (route.component) {
-                resolve(route.component);
-            } else if (route.components[consumedUrl]) {
+                resolve(route.component && !route.component.isDestroyed());
+            } else if (route.components[consumedUrl] && !route.components[consumedUrl].isDestroyed()) {
                 resolve(route.components[consumedUrl]);
             } else if (route.componentConstructor) {
                 let component = route.componentConstructor.call();
