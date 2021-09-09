@@ -104,9 +104,11 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 // doing anything.
                 return;
             }
-            showComponent(component);
-            currentUrl = consumedUrl;
             triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, component);
+            component.whenReady().then(() => {
+                showComponent(component);
+                currentUrl = consumedUrl;
+            });
         });
     };
 
