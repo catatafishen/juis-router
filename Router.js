@@ -112,6 +112,8 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
         });
     };
 
+    this.whenReady = () => Promise.resolve();
+
     let triggerNewNavigateEvent = function (route, url, consumedUrl, matchingUrlPart, dynamicParameters, component) {
         const parameters = {...dynamicParameters, ...getUrlParameters(matchingUrlPart, route)};
         component.trigger(NAVIGATE, {
