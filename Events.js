@@ -4,6 +4,8 @@ const SHOW_LOADING = "SHOW_LOADING";
 const SHOW_PAGE = "SHOW_PAGE";
 const REQUEST_NAVIGATE = "REQUEST_NAVIGATE";
 const NAVIGATE = "navigate";
+const AFTER_NAVIGATION = Symbol();
+const BEFORE_NAVIGATION = Symbol();
 
 export {SHOW_ERROR};
 export {SHOW_NOT_FOUND};
@@ -11,3 +13,5 @@ export {SHOW_LOADING};
 export {SHOW_PAGE};
 export {REQUEST_NAVIGATE};
 export {NAVIGATE};
+export {AFTER_NAVIGATION};
+export {BEFORE_NAVIGATION};

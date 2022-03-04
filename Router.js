@@ -1,7 +1,16 @@
 import {concatenateUrls, consumeUrl, getUrlParameters, isMatchingUrl, isSameUrl} from "./NavigationUtils.js";
 import Listenable from "juis-commons/Listenable.js";
 import {NOT_FOUND} from "juis-commons/Errors.js";
-import {NAVIGATE, REQUEST_NAVIGATE, SHOW_ERROR, SHOW_LOADING, SHOW_NOT_FOUND, SHOW_PAGE} from "./Events.js";
+import {
+    AFTER_NAVIGATION,
+    BEFORE_NAVIGATION,
+    NAVIGATE,
+    REQUEST_NAVIGATE,
+    SHOW_ERROR,
+    SHOW_LOADING,
+    SHOW_NOT_FOUND,
+    SHOW_PAGE
+} from "./Events.js";
 
 /**
  * @Mixin Listenable
@@ -84,7 +93,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
 
     let routerBaseUrl;
     let currentUrl;
-    let navigate = function (route, url, consumedUrl, matchingUrlPart, dynamicParameters) {
+    let navigate = (route, url, consumedUrl, matchingUrlPart, dynamicParameters) => {
         if (isSameUrl(currentUrl, consumedUrl)) {
             // No need to act if the url didn't change. Just propagate in case something on a lower level has changed.
             triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, currentComponent);
@@ -104,10 +113,12 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 // doing anything.
                 return;
             }
+            this.trigger(BEFORE_NAVIGATION, {url, consumedUrl, routerBaseUrl}, {propagating: false});
             triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, component);
             component.whenReady().then(() => {
                 showComponent(component);
                 currentUrl = consumedUrl;
+                this.trigger(AFTER_NAVIGATION, {url, consumedUrl, routerBaseUrl}, {propagating: false});
             });
         });
     };
