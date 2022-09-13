@@ -120,6 +120,9 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 currentUrl = consumedUrl;
                 this.trigger(AFTER_NAVIGATION, navigationData, {propagating: false});
             });
+        }).catch(e => {
+            showComponent(errorPage);
+            console.error(e);
         });
     };
 
