@@ -114,11 +114,11 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 return;
             }
             this.trigger(BEFORE_NAVIGATION, {url, consumedUrl, routerBaseUrl}, {propagating: false});
-            triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, component);
+            const navigationData = triggerNewNavigateEvent(route, url, consumedUrl, matchingUrlPart, dynamicParameters, component);
             component.whenReady().then(() => {
                 showComponent(component);
                 currentUrl = consumedUrl;
-                this.trigger(AFTER_NAVIGATION, {url, consumedUrl, routerBaseUrl}, {propagating: false});
+                this.trigger(AFTER_NAVIGATION, navigationData, {propagating: false});
             });
         });
     };
@@ -127,13 +127,10 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
 
     let triggerNewNavigateEvent = function (route, url, consumedUrl, matchingUrlPart, dynamicParameters, component) {
         const parameters = {...dynamicParameters, ...getUrlParameters(matchingUrlPart, route)};
-        component.trigger(NAVIGATE, {
-            url,
-            consumedUrl,
-            routerBaseUrl,
-            parameters
-        }, {propagating: false});
-    }
+        const eventData = {url, consumedUrl, routerBaseUrl, parameters};
+        component.trigger(NAVIGATE, eventData, {propagating: false});
+        return eventData;
+    };
 
     let baseViewPath = "";
 
@@ -164,9 +161,9 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
 
     this.destroy = function () {
         this.removeAllListeners();
-    }
+    };
 
-    let parameters = {}
+    let parameters = {};
     this.on(NAVIGATE, (navigation, event) => {
         if (!navigation.consumedUrl || navigation.consumedUrl === "/") {
             navigation.consumedUrl = "";
@@ -258,7 +255,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                 parameters
             }, {propagating: false});
         } else {
-            return this.triggerOnce(REQUEST_NAVIGATE, {...event}, {skipOrigin: true})
+            return this.triggerOnce(REQUEST_NAVIGATE, {...event}, {skipOrigin: true});
         }
     });
 }
