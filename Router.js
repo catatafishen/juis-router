@@ -39,7 +39,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
         return routes.find(route => isMatchingUrl(url, route.url));
     };
     this.setFallbackRoute = function (url) {
-        fallbackRoute = findMatchingRoute(url);
+        fallbackRoute = {...findMatchingRoute(url), url};
     };
 
     let getComponentForRoute = (route, consumedUrl) => {
