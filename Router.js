@@ -91,7 +91,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
         return component;
     };
 
-    let routerBaseUrl;
+    let routerBaseUrl = "";
     let currentUrl;
     let navigate = (route, url, consumedUrl, matchingUrlPart, dynamicParameters) => {
         if (isSameUrl(currentUrl, consumedUrl)) {
