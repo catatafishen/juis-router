@@ -74,6 +74,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
                     // in case a new backend version has been deployed after loading the web page.
                     this.triggerOnce("checkVersion");
                     console.warn(`Could not load module at ${route.path}.`, e);
+                    throw e;
                 });
             }
         });
@@ -122,7 +123,7 @@ function Router(dynamicImport, loadingPage, notFoundPage, errorPage) {
             });
         }).catch(e => {
             showComponent(errorPage);
-            console.error(e);
+            throw e;
         });
     };
 
