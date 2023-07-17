@@ -31,7 +31,7 @@ let getUrlParameters = (url, route) => {
         delete params.urlParameterNames;
         return params;
     } else {
-        return {...route.parameters, ...urlParams, urlParameters: urlParams}
+        return {...route.parameters, ...urlParams, urlParameters: urlParams};
     }
 };
 
@@ -42,8 +42,8 @@ const matchUrl = (url, pattern) => {
     } else if (matches === null && !url.startsWith("/")) {
         matches = ("/" + url).match(pattern);
     }
-    return matches
-}
+    return matches;
+};
 
 let consumeUrl = (url, pattern) => {
     if (!pattern) {
@@ -75,8 +75,8 @@ let concatenateUrls = (...urls) => {
             }
             return url;
         })
-        .join("/")
-}
+        .join("/");
+};
 
 const isSameUrl = (url1, url2) => {
     if (typeof url1 !== "string" || typeof url2 !== "string") {
@@ -95,6 +95,6 @@ const isSameUrl = (url1, url2) => {
         url2 = url2 + "/";
     }
     return url1 === url2;
-}
+};
 
 export {isMatchingUrl, getUrlParameters, consumeUrl, concatenateUrls, isSameUrl};
