@@ -37,23 +37,25 @@ let getUrlParameters = (url, route) => {
 
 const matchUrl = (url, pattern) => {
     let matches = url.match(pattern);
+    let offset = 0;
     if (matches === null && url.startsWith("/")) {
         matches = url.substring(1).match(pattern);
+        offset = 1;
     } else if (matches === null && !url.startsWith("/")) {
         matches = ("/" + url).match(pattern);
+        offset = -1;
     }
-    return matches;
+    if (matches === null) {
+        throw new Error(`Cannot consume url ${url} that does not match pattern ${pattern.toString()}`);
+    }
+    return url.substring(0, matches[0].length + offset);
 };
 
 let consumeUrl = (url, pattern) => {
     if (!pattern) {
         return "";
     } else if (pattern instanceof RegExp) {
-        let matches = matchUrl(url, pattern);
-        if (matches === null) {
-            throw new Error(`Cannot consume url ${url} that does not match pattern ${pattern.toString()}`);
-        }
-        return url.substring(0, matches[0].length);
+        return matchUrl(url, pattern);
     } else {
         if (!pattern.startsWith("/")) {
             pattern = "/" + pattern;
